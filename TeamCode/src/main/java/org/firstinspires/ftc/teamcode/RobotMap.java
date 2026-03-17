@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.utils.odo;
 
 public class RobotMap {
     public DcMotorEx frontLeftDrive  = null;
@@ -16,6 +17,10 @@ public class RobotMap {
     public DcMotorEx launch1 = null;
     public DcMotorEx launch2 = null;
     public Servo ramp= null;
+    public Servo hud = null;
+    public Servo turret1=null;
+    public Servo turret2=null;
+    public  odo Odo =null;
     public RobotMap(HardwareMap hwMap) {
         //motoare de sasiu
         frontLeftDrive  = hwMap.get(DcMotorEx.class, "leftFront");
@@ -67,5 +72,14 @@ public class RobotMap {
         //ramp-servo
         ramp= hwMap.get(Servo.class, "ramp");
 
+        //hud
+        hud= hwMap.get(Servo.class, "hud");
+
+        //tureta (2 servouri)
+        turret1=hwMap.get(Servo.class, "turret1");
+        turret2=hwMap.get(Servo.class, "turret2");
+
+        //odo
+        Odo = new odo(hwMap, "pinpoint");
     }
 }

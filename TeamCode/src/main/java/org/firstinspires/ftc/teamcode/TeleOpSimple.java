@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.RobotMap;
 
@@ -9,13 +10,31 @@ import org.firstinspires.ftc.teamcode.RobotMap;
 public class TeleOpSimple extends LinearOpMode {
     @Override
     public void runOpMode() {
+
+        //initializari de servo uri, robotmap etc
         RobotMap r = new RobotMap(hardwareMap);
         Ramp ramp = new Ramp();
+        Shooter shooter = new Shooter();
+        Hud hud = new Hud();
+        ShootingSequence seq = new ShootingSequence();
+        Turret turret =  new Turret();
+
         ramp.CS= Ramp.rampStatus.INITIALIZE;
+        shooter.CS=Shooter.shooterStatus.INITIALIZE;
+        hud.CS=Hud.hudStatus.INITIALIZE;
+        seq.CS=ShootingSequence.shootingStatus.IDLE;
+
+        Gamepad currentGamepad1 = new Gamepad();
+        Gamepad previousGamepad1 = new Gamepad();
+        r.Odo.recalibrate();
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
             // Drive
+            previousGamepad1.copy(currentGamepad1); //ala nou devine vechi
+            currentGamepad1.copy(gamepad1); //mi-e lene sa schimb gamepad1 peste tot
+
+
             double y  = -gamepad1.left_stick_y;
             double x  =  gamepad1.left_stick_x;
             double rx =  gamepad1.right_stick_x;
@@ -47,11 +66,19 @@ public class TeleOpSimple extends LinearOpMode {
                 r.collect2.setPower(0);
             }
 
-            //Punem rampa pe x
-            if (gamepad1.cross==true)
-            ramp.CS= Ramp.rampStatus.SHOOT;
-            else ramp.CS= Ramp.rampStatus.COLLECT;
+            //Pe x punem rampa si shootam
+            if (gamepad1.cross && !previousGamepad1.cross) {
+                //fastshootingsequence
+                seq.CS=ShootingSequence.shootingStatus.PREPARE;
+                seq.timer.reset();
+            }
+
+            shooter.update(r);
             ramp.update(r);
+            hud.update(r);
+            seq.update(r,ramp,shooter, hud, turret);
+            turret.update(r);
+            r.Odo.update();
         }
     }
 }
