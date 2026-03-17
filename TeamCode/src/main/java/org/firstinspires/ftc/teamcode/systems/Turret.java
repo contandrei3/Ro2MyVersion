@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.systems;
+
+import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 
 public class Turret {
 
@@ -23,7 +25,12 @@ public class Turret {
                 double robotX = r.Odo.getX();
                 double robotY = r.Odo.getY();
                 double angle = Math.atan2(GOAL_Y - robotY, GOAL_X - robotX);
-                double turretPos = (angle + Math.PI) / (2 * Math.PI);
+                double relativeAngle = angle - r.Odo.getHeading(); // unghi relativ la robot
+                // oleaca de normalizare
+                while (relativeAngle > Math.PI) relativeAngle -= 2 * Math.PI;
+                while (relativeAngle < -Math.PI) relativeAngle += 2 * Math.PI;
+                double turretPos = (relativeAngle + Math.PI) / (2 * Math.PI);
+                turretPos = Math.max(0, Math.min(1, turretPos));
                 r.turret1.setPosition(turretPos); // ← lipsea
                 r.turret2.setPosition(turretPos); // ← lipsea
                 break;

@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.declarations;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.teamcode.utils.odo;
+import org.firstinspires.ftc.teamcode.maths_and_systems.odo;
 
 public class RobotMap {
     public DcMotorEx frontLeftDrive  = null;

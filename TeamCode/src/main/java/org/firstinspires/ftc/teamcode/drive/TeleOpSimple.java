@@ -1,10 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.RobotMap;
+import org.firstinspires.ftc.teamcode.systems.ShootingSequence;
+import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.systems.Hud;
+import org.firstinspires.ftc.teamcode.systems.Ramp;
+import org.firstinspires.ftc.teamcode.systems.Shooter;
+import org.firstinspires.ftc.teamcode.systems.Turret;
 
 @TeleOp(name = "TeleOpSimple", group = "Linear OpMode")
 public class TeleOpSimple extends LinearOpMode {
@@ -27,6 +32,8 @@ public class TeleOpSimple extends LinearOpMode {
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
         r.Odo.recalibrate();
+
+
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -52,9 +59,10 @@ public class TeleOpSimple extends LinearOpMode {
             r.frontRightDrive.setPower(frpow);
             r.backRightDrive.setPower(brpow);
 
-            // Collect
+            // Collect - Intake
+            if (seq.CS==ShootingSequence.shootingStatus.IDLE){ //aici verificam sa nu interfereze cu miscarea intake ului la shooting
             double apasright = Math.min(gamepad1.right_trigger, 0.85);
-            double apasleft  = gamepad1.left_trigger;
+            double apasleft  = Math.min(gamepad1.left_trigger, 0.85);
             if (apasright > 0.1) {
                 r.collect1.setPower(apasright);
                 r.collect2.setPower(apasright);
@@ -64,21 +72,34 @@ public class TeleOpSimple extends LinearOpMode {
             } else {
                 r.collect1.setPower(0);
                 r.collect2.setPower(0);
-            }
+            }}
 
-            //Pe x punem rampa si shootam
+            //shooting
             if (gamepad1.cross && !previousGamepad1.cross) {
                 //fastshootingsequence
+                seq.timer.reset();
                 seq.CS=ShootingSequence.shootingStatus.PREPARE;
                 seq.timer.reset();
             }
-
+            //reset de odometrie
+            if (gamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
+            r.Odo.recalibrate();
+            }
             shooter.update(r);
             ramp.update(r);
             hud.update(r);
             seq.update(r,ramp,shooter, hud, turret);
             turret.update(r);
             r.Odo.update();
+
+            // telemetrie
+            telemetry.addData("Seq", seq.CS);
+            telemetry.addData("Shooter", shooter.CS);
+            telemetry.addData("Ramp", ramp.CS);
+            telemetry.addData("X", r.Odo.getX());
+            telemetry.addData("Y", r.Odo.getY());
+            telemetry.addData("Heading", Math.toDegrees(r.Odo.getHeading()));
+            telemetry.update();
         }
     }
 }

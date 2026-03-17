@@ -1,31 +1,33 @@
-package org.firstinspires.ftc.teamcode.utils;
+package org.firstinspires.ftc.teamcode.maths_and_systems;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 public class odo {
-    private final org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver pinpoint;
+    private final GoBildaPinpointDriver pinpoint;
     private double x, y, heading;
     private final double xOffset = -4.2716535433, yOffset = 1.575;
 
 
 
     public odo(HardwareMap hardwareMap, String name) {
-        pinpoint = hardwareMap.get(org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         pinpoint.setOffsets(xOffset, yOffset, DistanceUnit.INCH);
-        pinpoint.setEncoderResolution(org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpoint.setEncoderDirections(org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver.EncoderDirection.FORWARD, org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
         pinpoint.resetPosAndIMU();
-        x = 0.0;
-        y = 0.0;
-        heading = 0.0;
+        x = 8;
+        y = 8;
+        heading = Math.toRadians(90);
     }
 
-    public void recalibrate()
-    {
+    public void recalibrate() {
         pinpoint.recalibrateIMU();
+        pinpoint.setPosition(new Pose2D(
+                DistanceUnit.INCH, 8, 8, AngleUnit.RADIANS, Math.toRadians(90)
+        ));
     }
 
     public void update(){
@@ -38,11 +40,12 @@ public class odo {
     public double getY(){return y;}
     public double getHeading(){return heading;}
     public Position getPosition(){return new Position(x,y,heading);}
-    public org.firstinspires.ftc.teamcode.utils.GoBildaPinpointDriver getPinpoint(){return pinpoint;}
+    public GoBildaPinpointDriver getPinpoint(){return pinpoint;}
     public static class Position{
         public final double x,y,heading;
         public Position(double x,double y,double heading){this.x=x;this.y=y;this.heading=heading;}
     }
+
 
 }
 
