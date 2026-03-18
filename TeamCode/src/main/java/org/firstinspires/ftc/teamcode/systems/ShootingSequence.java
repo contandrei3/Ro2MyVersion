@@ -17,8 +17,8 @@ public class ShootingSequence {
 
     }
     // coordonate goal rosu in inch
-    static final double GOAL_X = 131.51;
-    static final double GOAL_Y = 13.66;
+/*    static final double GOAL_X = 131.51;
+    static final double GOAL_Y = 13.66;*/
     public shootingStatus CS = IDLE;
     public ElapsedTime timer = new ElapsedTime();
     public void update(RobotMap r, Ramp ramp, Shooter shooter, Hud hud, Turret turret ) {
@@ -32,14 +32,16 @@ public class ShootingSequence {
                 hud.CS=Hud.hudStatus.CLOSE;
                 turret.update(r);
                 shooter.update(r);
-                if (timer.seconds()>3) {CS=SHOOT; break;} //basically orientam sistemele de shooting
+                if (timer.seconds()>3) {CS=SHOOT; timer.reset(); } //basically orientam sistemele de shooting
+                break;
             }
             case SHOOT: {
                 r.collect1.setPower(0.9);
                 r.collect2.setPower(0.9);
                 ramp.CS=Ramp.rampStatus.SHOOT;
                 ramp.update(r);
-                if (timer.seconds()>5) {CS=STOP; break;}
+                if (timer.seconds()>3) {CS=STOP; }
+                break;
             }
 
             case STOP: {

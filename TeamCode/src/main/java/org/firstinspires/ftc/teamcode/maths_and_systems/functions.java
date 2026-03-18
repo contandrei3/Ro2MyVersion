@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.maths_and_systems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 
@@ -9,7 +9,7 @@ public class functions {
     public static double getshoootpower(RobotMap r)
     {
         double rx=r.Odo.getX();
-        double ry=r.Odo.getX();
+        double ry=r.Odo.getY();
         double dist=getdistance(rx,ry);
         return 0.05*dist+0.73;
     }
@@ -17,7 +17,7 @@ public class functions {
     {
         double GOAL_X = 131.51;
         double GOAL_Y = 13.66;
-        return Math.sqrt((rx-GOAL_X)*(rx-GOAL_X)+(rx-GOAL_Y)*(rx-GOAL_Y))/ 39.37;
+        return Math.sqrt((rx-GOAL_X)*(rx-GOAL_X)+(ry-GOAL_Y)*(ry-GOAL_Y))/ 39.37;
     }
     public static double getturretpower (RobotMap r)
     {

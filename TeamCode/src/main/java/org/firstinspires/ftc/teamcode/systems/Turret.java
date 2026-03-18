@@ -24,6 +24,7 @@ public class Turret {
             {
                 r.turret1.setPosition(0.5);
                 r.turret2.setPosition(0.5);
+                break;
             }
             case IDLE: {
 
@@ -33,7 +34,6 @@ public class Turret {
                 double pos= functions.getturretpower(r);
                 r.turret1.setPosition(pos);
                 r.turret2.setPosition(pos);
-                CS= turretStatus.IDLE;
                 break;
             }
         }
