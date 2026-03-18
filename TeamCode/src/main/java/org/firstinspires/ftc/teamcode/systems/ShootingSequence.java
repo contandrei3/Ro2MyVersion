@@ -27,40 +27,31 @@ public class ShootingSequence {
             case IDLE: {break;}
             case PREPARE:
             {
-                double GOAL_X = 131.51;
-                double GOAL_Y = 13.66;
-                double dist=Math.sqrt((GOAL_X - r.Odo.getX())*(GOAL_X - r.Odo.getX())+(GOAL_Y - r.Odo.getY())*(GOAL_Y - r.Odo.getY()))/39.37; //distanta in metrii
-                if (dist<=2.5){ //close
-                    {shooter.CS= Shooter.shooterStatus.SHOOT;
-                hud.CS= Hud.hudStatus.CLOSE;}
-                else
-                {
-                    shooter.CS= Shooter.shooterStatus.SHOOT_FAR;
-                    hud.CS= Hud.hudStatus.FAR;
-                }
+                shooter.CS=Shooter.shooterStatus.SHOOT; //pornim shooterul
                 turret.CS=Turret.turretStatus.TRACK;
+                hud.CS=Hud.hudStatus.CLOSE;
                 turret.update(r);
-                if (timer.seconds() > 1)
-                {timer.reset(); CS=SHOOT;}
-                break;
+                shooter.update(r);
+                if (timer.seconds()>3) {CS=SHOOT; break;} //basically orientam sistemele de shooting
             }
             case SHOOT: {
-                ramp.CS= Ramp.rampStatus.SHOOT;
-                r.collect1.setPower(0.8);
-                r.collect2.setPower(0.8);
-
-                if (timer.seconds()>2)
-                    CS= STOP;
-                break;
+                r.collect1.setPower(0.9);
+                r.collect2.setPower(0.9);
+                ramp.CS=Ramp.rampStatus.SHOOT;
+                ramp.update(r);
+                if (timer.seconds()>5) {CS=STOP; break;}
             }
+
             case STOP: {
                 ramp.CS= Ramp.rampStatus.COLLECT;
                 hud.CS=Hud.hudStatus.INITIALIZE;
                 shooter.CS= Shooter.shooterStatus.STOP;
                 turret.CS= Turret.turretStatus.IDLE;
-                CS=IDLE;
                 r.collect1.setPower(0);
                 r.collect2.setPower(0);
+                r.launch1.setPower(0);
+                r.launch2.setPower(0);
+                CS=IDLE;
                 break;
             }
         }

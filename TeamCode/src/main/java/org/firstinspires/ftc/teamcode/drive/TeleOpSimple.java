@@ -27,7 +27,7 @@ public class TeleOpSimple extends LinearOpMode {
         ramp.CS= Ramp.rampStatus.INITIALIZE;
         shooter.CS=Shooter.shooterStatus.INITIALIZE;
         hud.CS=Hud.hudStatus.INITIALIZE;
-        seq.CS=ShootingSequence.shootingStatus.IDLE;
+        seq.CS=ShootingSequence.shootingStatus.STOP;
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
@@ -61,30 +61,30 @@ public class TeleOpSimple extends LinearOpMode {
 
             // Collect - Intake
             if (seq.CS==ShootingSequence.shootingStatus.IDLE){ //aici verificam sa nu interfereze cu miscarea intake ului la shooting
-            double apasright = Math.min(gamepad1.right_trigger, 0.85);
-            double apasleft  = Math.min(gamepad1.left_trigger, 0.85);
-            if (apasright > 0.1) {
-                r.collect1.setPower(apasright);
-                r.collect2.setPower(apasright);
-            } else if (apasleft > 0.1) {
-                r.collect1.setPower(-apasleft);
-                r.collect2.setPower(-apasleft);
-            } else {
-                r.collect1.setPower(0);
-                r.collect2.setPower(0);
-            }}
-
-            //shooting
-            if (gamepad1.cross && !previousGamepad1.cross) {
+                double putere=gamepad1.right_trigger-gamepad1.left_trigger;
+                if (putere <0) putere= Math.max(putere,-0.85);
+                if (putere >0) putere= Math.min(putere,0.85);
+                r.collect1.setPower(putere);
+                r.collect2.setPower(putere);
+            }
+            //windup la shooter pe un buton (basically il incalzim), da merge si pe invers sa l oprim
+            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)
+            {
+                if (shooter.CS== Shooter.shooterStatus.IDLE) //daca e oprit shootherul pornim windupul
+                    shooter.CS= Shooter.shooterStatus.WINDUP;
+                else shooter.CS= Shooter.shooterStatus.STOP;
+            }
+            //shootam cu secventa pe x
+            if (currentGamepad1.cross && !previousGamepad1.cross) {
                 //fastshootingsequence
                 seq.timer.reset();
                 seq.CS=ShootingSequence.shootingStatus.PREPARE;
-                seq.timer.reset();
             }
             //reset de odometrie
-            if (gamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
+            if (currentGamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
             r.Odo.recalibrate();
             }
+            turret.CS=Turret.turretStatus.TRACK;
             shooter.update(r);
             ramp.update(r);
             hud.update(r);
@@ -99,6 +99,7 @@ public class TeleOpSimple extends LinearOpMode {
             telemetry.addData("X", r.Odo.getX());
             telemetry.addData("Y", r.Odo.getY());
             telemetry.addData("Heading", Math.toDegrees(r.Odo.getHeading()));
+            telemetry.addData("timer",seq.timer);
             telemetry.update();
         }
     }

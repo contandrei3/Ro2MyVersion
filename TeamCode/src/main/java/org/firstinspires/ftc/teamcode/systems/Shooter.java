@@ -1,40 +1,58 @@
 package org.firstinspires.ftc.teamcode.systems;
 
 
+import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.IDLE;
+import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.INITIALIZE;
+import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.STOP;
+import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.WINDUP;
+import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.SHOOT;
+
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 
 public class Shooter {
 
     public enum shooterStatus {
         INITIALIZE,
+        IDLE,
         STOP,
+        WINDUP,
         SHOOT,
-        SHOOT_FAR,
     }
 
-    public shooterStatus CS = shooterStatus.INITIALIZE;
+    public shooterStatus CS = INITIALIZE;
     //update(RobotMap r);
-    double stop=0.05;
-
+    double stop = 0;
+    double winduppower = 0.6;
 
     public void update(RobotMap r) {
-        if (CS == shooterStatus.INITIALIZE) {
-            r.launch1.setPower(stop);
-            r.launch2.setPower(stop);
-        } else if (CS == shooterStatus.STOP) {
-            r.launch1.setPower(stop);
-            r.launch2.setPower(stop);
-        } else if (CS == shooterStatus.SHOOT) {
-            double GOAL_X = 131.51;
-            double GOAL_Y = 13.66;
-            double dist=Math.sqrt((GOAL_X - r.Odo.getX())*(GOAL_X - r.Odo.getX())+(GOAL_Y - r.Odo.getY())*(GOAL_Y - r.Odo.getY()))/39.37; //distanta in metrii
-            double pumniimeicreiernare=0.05*dist+0.73;
-            r.launch1.setPower(pumniimeicreiernare);
-            r.launch2.setPower(pumniimeicreiernare);
-        } else if (CS==shooterStatus.SHOOT_FAR)
-        {
-            r.launch1.setPower(0.90);
-            r.launch2.setPower(0.90);
+        switch (CS) {
+            case INITIALIZE: {
+                r.launch1.setPower(stop);
+                r.launch2.setPower(stop);
+                CS = IDLE;
+                break;
+            }
+            case IDLE: {
+                break;
+            }
+            case WINDUP: {
+                r.launch1.setPower(winduppower);
+                r.launch2.setPower(winduppower);
+                break;
+            }
+            case SHOOT: {
+                double shootpow = functions.getshoootpower(r);
+                r.launch1.setPower(shootpow);
+                r.launch2.setPower(shootpow);
+                break;
+            }
+            case STOP: {
+                r.launch1.setPower(0);
+                r.launch2.setPower(0);
+                CS = IDLE;
+                break;
+            }
         }
     }
 }

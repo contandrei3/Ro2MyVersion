@@ -11,15 +11,23 @@ public class Ramp {
     }
 
     public rampStatus CS = rampStatus.INITIALIZE;
-    double shoot=0.78;
-    double stop=0.38;
+    double shoot=0.78; //pus
+    double stop=0.38; //distanta mare
     public void update(RobotMap r) {
-        if (CS == rampStatus.INITIALIZE) {
-            r.ramp.setPosition(stop);
-        } else if (CS == rampStatus.COLLECT) {
-            r.ramp.setPosition(stop);
-        } else if (CS == rampStatus.SHOOT) {
-            r.ramp.setPosition(shoot);
+        switch (CS)
+        {
+            case INITIALIZE: {
+                r.ramp.setPosition(stop);
+                break;
+            }
+            case COLLECT: {
+                r.ramp.setPosition(stop);
+                break;
+            }
+            case SHOOT: {
+                r.ramp.setPosition(shoot);
+                break;
+            }
         }
     }
 }

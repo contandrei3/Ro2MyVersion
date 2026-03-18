@@ -16,13 +16,20 @@ public class Hud {
 
     //double middle=0.8;
     public void update(RobotMap r) {
-        if (CS == hudStatus.INITIALIZE) {
-            r.hud.setPosition(0.5);
-        } else if (CS == hudStatus.CLOSE) {
-
-            r.hud.setPosition(close);
-        } else if (CS == hudStatus.FAR) {
-            r.hud.setPosition(far);
+        switch (CS){
+            case INITIALIZE: {
+                r.hud.setPosition(0.5);
+                break;
+            }
+            case CLOSE:{
+                r.hud.setPosition(close);
+                break;
+            }
+            case FAR:{
+                r.hud.setPosition(far);
+                break;
+            }
         }
+
     }
 }
