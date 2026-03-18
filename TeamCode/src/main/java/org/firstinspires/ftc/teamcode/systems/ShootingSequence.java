@@ -30,8 +30,6 @@ public class ShootingSequence {
                 shooter.CS=Shooter.shooterStatus.SHOOT; //pornim shooterul
                 turret.CS=Turret.turretStatus.TRACK;
                 hud.CS=Hud.hudStatus.CLOSE;
-                turret.update(r);
-                shooter.update(r);
                 if (timer.seconds()>3) {CS=SHOOT; timer.reset(); } //basically orientam sistemele de shooting
                 break;
             }
