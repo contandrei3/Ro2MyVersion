@@ -3,38 +3,42 @@ package org.firstinspires.ftc.teamcode.maths_and_systems;
 
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.declarations.globals;
 
 public class functions {
 
     public static double getshoootpower(RobotMap r)
     {
-        double rx=r.Odo.getX();
-        double ry=r.Odo.getY();
+        double rx=r.Odo.getPose().getX();
+        double ry=r.Odo.getPose().getY();
         double dist=getdistance(rx,ry);
         double n=0.05;
         double m=0.73;
-        return n*dist+m;
+        double putere=n*dist+m;
+        putere=Math.max(0, Math.min(putere,1));
+        return putere;
+    }
+
+    public static double getturretpower (RobotMap r)
+    {
+        double GOAL_X = globals.xRedGoal;
+        double GOAL_Y = globals.yRedGoal;
+        double rx=r.Odo.getPose().getX();
+        double ry=r.Odo.getPose().getY();
+        double heading=r.Odo.getPose().getHeading();
+        double angletogoal = Math.atan2(GOAL_Y - ry, GOAL_X - rx);//asta e unghiul la care trebuie sa ajunga servo ul fata de 0x
+        double finalangle=angletogoal-heading; // asta e cat trebuie sa compenseze basically tureta
+        if (finalangle>Math.toRadians(120)) finalangle=Math.toRadians(120);
+        if (finalangle<Math.toRadians(-120)) finalangle=Math.toRadians(-120);
+        finalangle=0.5+finalangle/Math.toRadians(250); //asta e ce urmeaza sa ii dau turetei si mai jos e normalizarea
+        return finalangle;
+
     }
     public static double getdistance (double rx, double ry)
     {
-        double GOAL_X = 131.51;
-        double GOAL_Y = 13.66;
+        double GOAL_X = globals.xRedGoal;
+        double GOAL_Y = globals.yRedGoal;
         return Math.sqrt((rx-GOAL_X)*(rx-GOAL_X)+(ry-GOAL_Y)*(ry-GOAL_Y))/ 39.37;
-    }
-    public static double getturretpower (RobotMap r)
-    {
-        double GOAL_X = 131.51;
-        double GOAL_Y = 13.66;
-        double rx = r.Odo.getX();
-        double ry = r.Odo.getY();
-        double heading = r.Odo.getHeading();
-        double angleToGoal = Math.atan2(Math.abs(rx - GOAL_X), Math.abs(GOAL_Y - ry));
-        double turretTarget = angleToGoal * (-1) - heading + Math.PI / 2;
-
-        // clamp unghi ca în Ro2D2
-        turretTarget = Math.max(Math.toRadians(-125), Math.min(Math.toRadians(125), turretTarget));
-
-        return angletopow(turretTarget);
     }
     public static double angletopow (double angle)
     {

@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+import com.pedropathing.ftc.localization.localizers.PinpointLocalizer;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 import org.firstinspires.ftc.teamcode.systems.ShootingSequence;
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 import org.firstinspires.ftc.teamcode.systems.Hud;
@@ -31,9 +34,8 @@ public class TeleOpSimple extends LinearOpMode {
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
-        r.Odo.recalibrate();
 
-
+        r.Odo.resetIMU();
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -70,9 +72,13 @@ public class TeleOpSimple extends LinearOpMode {
             //windup la shooter pe un buton (basically il incalzim), da merge si pe invers sa l oprim
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)
             {
-                if (shooter.CS== Shooter.shooterStatus.IDLE) //daca e oprit shootherul pornim windupul
-                    shooter.CS= Shooter.shooterStatus.WINDUP;
-                else shooter.CS= Shooter.shooterStatus.STOP;
+               r.launch1.setPower(0);
+               r.launch2.setPower(0);
+
+               /*sleep(3000);
+
+                r.launch1.setPower(0);
+                r.launch2.setPower(0);*/
             }
             //shootam cu secventa pe x
             if (currentGamepad1.cross && !previousGamepad1.cross) {
@@ -82,7 +88,8 @@ public class TeleOpSimple extends LinearOpMode {
             }
             //reset de odometrie
             if (currentGamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
-            r.Odo.recalibrate();
+                r.Odo.resetIMU();
+                r.Odo.setStartPose(new Pose(8, 8, Math.toRadians(90)));
             }
             turret.CS=Turret.turretStatus.TRACK;
             shooter.update(r);
@@ -96,10 +103,14 @@ public class TeleOpSimple extends LinearOpMode {
             telemetry.addData("Seq", seq.CS);
             telemetry.addData("Shooter", shooter.CS);
             telemetry.addData("Ramp", ramp.CS);
-            telemetry.addData("X", r.Odo.getX());
-            telemetry.addData("Y", r.Odo.getY());
-            telemetry.addData("Heading", Math.toDegrees(r.Odo.getHeading()));
+            //telemetry.addData("Ramp", ramp.CS);
+            telemetry.addData("X", r.Odo.getPose().getX());
+            telemetry.addData("Y", r.Odo.getPose().getY());
+            telemetry.addData("Heading", Math.toDegrees(r.Odo.getPose().getHeading()));
             telemetry.addData("timer",seq.timer);
+            telemetry.addData("shooter current power", r.launch1.getPower());
+            telemetry.addData("shooter ideal power", functions.getshoootpower(r));
+            telemetry.addData("cuurent distance from shooter", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
             telemetry.update();
         }
     }

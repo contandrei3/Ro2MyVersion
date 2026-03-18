@@ -7,6 +7,8 @@ import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.STOP;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.WINDUP;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.SHOOT;
 
+import static java.lang.Thread.sleep;
+
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 
@@ -23,7 +25,7 @@ public class Shooter {
     public shooterStatus CS = INITIALIZE;
     //update(RobotMap r);
     double stop = 0;
-    double winduppower = 0.6;
+    double winduppower = 0.9;
 
     public void update(RobotMap r) {
         switch (CS) {
@@ -37,14 +39,17 @@ public class Shooter {
                 break;
             }
             case WINDUP: {
-                r.launch1.setPower(winduppower);
-                r.launch2.setPower(winduppower);
+                r.launch1.setPower(0.3);
+                r.launch2.setPower(0.3);
+                //sleep(3000);
                 break;
             }
             case SHOOT: {
                 double shootpow = functions.getshoootpower(r);
+
                 r.launch1.setPower(shootpow);
                 r.launch2.setPower(shootpow);
+
                 break;
             }
             case STOP: {

@@ -29,16 +29,17 @@ public class ShootingSequence {
             {
                 shooter.CS=Shooter.shooterStatus.SHOOT; //pornim shooterul
                 turret.CS=Turret.turretStatus.TRACK;
+               // shooter.update(r);
                 hud.CS=Hud.hudStatus.CLOSE;
-                if (timer.seconds()>3) {CS=SHOOT; timer.reset(); } //basically orientam sistemele de shooting
+                if (timer.seconds()>1.5) {CS=SHOOT; timer.reset(); } //basically orientam sistemele de shooting
                 break;
             }
             case SHOOT: {
-                r.collect1.setPower(0.9);
-                r.collect2.setPower(0.9);
+                r.collect1.setPower(0.6);
+                r.collect2.setPower(0.6);
                 ramp.CS=Ramp.rampStatus.SHOOT;
-                ramp.update(r);
-                if (timer.seconds()>3) {CS=STOP; }
+                //ramp.update(r);
+                if (timer.seconds()>1.5) {CS=STOP; }
                 break;
             }
 

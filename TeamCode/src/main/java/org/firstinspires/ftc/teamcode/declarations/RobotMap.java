@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.declarations;
 
+import com.pedropathing.ftc.localization.localizers.PinpointLocalizer;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.maths_and_systems.odo;
+import org.firstinspires.ftc.teamcode.pedroPathing.constants;
 
 public class RobotMap {
     public DcMotorEx frontLeftDrive  = null;
@@ -20,7 +23,7 @@ public class RobotMap {
     public Servo hud = null;
     public Servo turret1=null;
     public Servo turret2=null;
-    public  odo Odo =null;
+    public PinpointLocalizer Odo = null;
     public RobotMap(HardwareMap hwMap) {
         //motoare de sasiu
         frontLeftDrive  = hwMap.get(DcMotorEx.class, "leftFront");
@@ -60,7 +63,7 @@ public class RobotMap {
         launch1= hwMap.get(DcMotorEx.class, "launch1");
         launch2= hwMap.get(DcMotorEx.class, "launch2");
 
-        launch1.setDirection(DcMotorEx.Direction.FORWARD);
+        launch1.setDirection(DcMotorEx.Direction.REVERSE);
         launch2.setDirection(DcMotorEx.Direction.FORWARD);
 
         launch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -79,7 +82,14 @@ public class RobotMap {
         turret1=hwMap.get(Servo.class, "turret1");
         turret2=hwMap.get(Servo.class, "turret2");
 
-        //odo
-        Odo = new odo(hwMap, "pinpoint");
+        //odo din pedro
+
+
+            Odo = new PinpointLocalizer(hwMap, constants.localizerConstants);
+            Odo.setStartPose(new Pose(8, 8, Math.toRadians(90)));
+
+
+        //PID uri
+
     }
 }
