@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.systems;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
+import com.bylazar.configurables.annotations.Configurable;
 
+@Configurable
 public class Turret {
 
     public enum turretStatus {

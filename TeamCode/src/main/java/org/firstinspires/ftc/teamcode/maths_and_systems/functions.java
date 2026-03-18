@@ -4,7 +4,9 @@ package org.firstinspires.ftc.teamcode.maths_and_systems;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
 import org.firstinspires.ftc.teamcode.declarations.globals;
+import com.bylazar.configurables.annotations.Configurable;
 
+@Configurable
 public class functions {
 
     public static double getshoootpower(RobotMap r)

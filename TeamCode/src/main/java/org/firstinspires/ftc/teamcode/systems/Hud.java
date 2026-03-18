@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.systems;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import com.bylazar.configurables.annotations.Configurable;
 
+@Configurable
 public class Hud {
 
     public enum hudStatus {
