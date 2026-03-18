@@ -32,6 +32,7 @@ public class Turret {
             }
             case TRACK: {
                 double pos= functions.getturretpower(r);
+                pos=0.5;
                 r.turret1.setPosition(pos);
                 r.turret2.setPosition(pos);
                 break;

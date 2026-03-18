@@ -25,11 +25,15 @@ public class functions {
     {
         double GOAL_X = 131.51;
         double GOAL_Y = 13.66;
-        double rx=r.Odo.getX();
-        double ry=r.Odo.getY();
-        double heading=r.Odo.getHeading();
+        double rx = r.Odo.getX();
+        double ry = r.Odo.getY();
+        double heading = r.Odo.getHeading();
         double angleToGoal = Math.atan2(Math.abs(rx - GOAL_X), Math.abs(GOAL_Y - ry));
-        double turretTarget = angleToGoal * (-1) - heading + Math.PI/2;
+        double turretTarget = angleToGoal * (-1) - heading + Math.PI / 2;
+
+        // clamp unghi ca în Ro2D2
+        turretTarget = Math.max(Math.toRadians(-125), Math.min(Math.toRadians(125), turretTarget));
+
         return angletopow(turretTarget);
     }
     public static double angletopow (double angle)
