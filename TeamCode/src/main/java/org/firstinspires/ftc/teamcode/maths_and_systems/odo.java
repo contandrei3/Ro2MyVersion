@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 public class odo {
     private final GoBildaPinpointDriver pinpoint;
     private double x, y, heading;
-    private final double xOffset = -4.2716535433, yOffset = 1.575;
+    private final double xOffset = -5.0087401, yOffset = 2.7552755;
 
 
 

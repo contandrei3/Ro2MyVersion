@@ -11,7 +11,9 @@ public class functions {
         double rx=r.Odo.getX();
         double ry=r.Odo.getY();
         double dist=getdistance(rx,ry);
-        return 0.05*dist+0.73;
+        double n=0.05;
+        double m=0.73;
+        return n*dist+m;
     }
     public static double getdistance (double rx, double ry)
     {
