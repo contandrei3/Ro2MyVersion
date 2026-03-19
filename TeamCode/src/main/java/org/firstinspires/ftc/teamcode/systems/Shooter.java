@@ -46,10 +46,8 @@ public class Shooter {
             }
             case SHOOT: {
                 double shootpow = functions.getshoootpower(r);
-
                 r.launch1.setPower(shootpow);
                 r.launch2.setPower(shootpow);
-
                 break;
             }
             case STOP: {

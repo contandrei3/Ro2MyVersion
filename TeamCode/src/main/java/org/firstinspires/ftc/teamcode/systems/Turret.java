@@ -12,6 +12,7 @@ public class Turret {
 
         IDLE,
         TRACK,  // se orientează spre goal
+        FRONT,
     }
 
     public turretStatus CS = turretStatus.IDLE;
@@ -37,6 +38,11 @@ public class Turret {
                 //pos=0.5;
                 r.turret1.setPosition(pos);
                 r.turret2.setPosition(pos);
+                break;
+            }
+            case FRONT: {
+                r.turret1.setPosition(0.5);
+                r.turret2.setPosition(0.5);
                 break;
             }
         }

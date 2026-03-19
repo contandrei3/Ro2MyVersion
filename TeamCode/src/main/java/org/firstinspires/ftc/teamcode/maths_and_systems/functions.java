@@ -23,8 +23,13 @@ public class functions {
 
     public static double getturretpower (RobotMap r)
     {
-        double GOAL_X = globals.xRedGoal;
-        double GOAL_Y = globals.yRedGoal;
+        double GOAL_X, GOAL_Y;
+        if (globals.alliance==1) {//daca alianta e rosie
+        GOAL_X = globals.xRedGoal;
+        GOAL_Y = globals.yRedGoal;}
+        else{
+        GOAL_X = globals.xBlueGoal;
+        GOAL_Y = globals.yBlueGoal;}
         double rx=r.Odo.getPose().getX();
         double ry=r.Odo.getPose().getY();
         double heading=r.Odo.getPose().getHeading();
@@ -33,13 +38,19 @@ public class functions {
         if (finalangle>Math.toRadians(120)) finalangle=Math.toRadians(120);
         if (finalangle<Math.toRadians(-120)) finalangle=Math.toRadians(-120);
         finalangle=0.5+finalangle/Math.toRadians(250); //asta e ce urmeaza sa ii dau turetei si mai jos e normalizarea
+        if (finalangle<0 || finalangle>1) finalangle=0.5;
         return finalangle;
 
     }
     public static double getdistance (double rx, double ry)
     {
-        double GOAL_X = globals.xRedGoal;
-        double GOAL_Y = globals.yRedGoal;
+        double GOAL_X, GOAL_Y;
+        if (globals.alliance==1) {//daca alianta e rosie
+            GOAL_X = globals.xRedGoal;
+            GOAL_Y = globals.yRedGoal;}
+        else{
+            GOAL_X = globals.xBlueGoal;
+            GOAL_Y = globals.yBlueGoal;}
         return Math.sqrt((rx-GOAL_X)*(rx-GOAL_X)+(ry-GOAL_Y)*(ry-GOAL_Y))/ 39.37;
     }
     public static double angletopow (double angle)

@@ -13,9 +13,10 @@ import org.firstinspires.ftc.teamcode.systems.Hud;
 import org.firstinspires.ftc.teamcode.systems.Ramp;
 import org.firstinspires.ftc.teamcode.systems.Shooter;
 import org.firstinspires.ftc.teamcode.systems.Turret;
+import org.firstinspires.ftc.teamcode.declarations.globals;
 
-@TeleOp(name = "TeleOpSimple", group = "Linear OpMode")
-public class TeleOpSimple extends LinearOpMode {
+@TeleOp(name = "TeleOp", group = "Linear OpMode")
+public class teleop extends LinearOpMode {
     @Override
     public void runOpMode() {
 
@@ -36,6 +37,8 @@ public class TeleOpSimple extends LinearOpMode {
         Gamepad previousGamepad1 = new Gamepad();
 
         r.Odo.resetIMU();
+
+        globals.alliance=1;
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -43,6 +46,10 @@ public class TeleOpSimple extends LinearOpMode {
             previousGamepad1.copy(currentGamepad1); //ala nou devine vechi
             currentGamepad1.copy(gamepad1); //mi-e lene sa schimb gamepad1 peste tot
 
+            if (currentGamepad1.left_bumper && !currentGamepad1.left_bumper)
+            {
+                globals.alliance=1-globals.alliance;
+            }
 
             double y  = -gamepad1.left_stick_y;
             double x  =  gamepad1.left_stick_x;
@@ -72,13 +79,8 @@ public class TeleOpSimple extends LinearOpMode {
             //windup la shooter pe un buton (basically il incalzim), da merge si pe invers sa l oprim
             if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)
             {
-               r.launch1.setPower(0);
-               r.launch2.setPower(0);
-
-               /*sleep(3000);
-
                 r.launch1.setPower(0);
-                r.launch2.setPower(0);*/
+                r.launch2.setPower(0);
             }
             //shootam cu secventa pe x
             if (currentGamepad1.cross && !previousGamepad1.cross) {
@@ -110,7 +112,7 @@ public class TeleOpSimple extends LinearOpMode {
             telemetry.addData("timer",seq.timer);
             telemetry.addData("shooter current power", r.launch1.getPower());
             telemetry.addData("shooter ideal power", functions.getshoootpower(r));
-            telemetry.addData("cuurent distance from shooter", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
+            telemetry.addData("cuurent distance from goal", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
             telemetry.update();
         }
     }
