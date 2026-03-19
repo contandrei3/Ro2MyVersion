@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.systems.ShootingSequence.shootingSt
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 
 public class ShootingSequence {
 
@@ -31,7 +32,10 @@ public class ShootingSequence {
                 turret.CS=Turret.turretStatus.TRACK;
                // shooter.update(r);
                 hud.CS=Hud.hudStatus.CLOSE;
-                if (timer.seconds()>1.5) {CS=SHOOT; timer.reset(); } //basically orientam sistemele de shooting
+                if (timer.seconds()>1.5) {
+                    CS=SHOOT;
+                    timer.reset();
+                }
                 break;
             }
             case SHOOT: {

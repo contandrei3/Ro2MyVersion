@@ -105,14 +105,15 @@ public class teleop extends LinearOpMode {
             telemetry.addData("Seq", seq.CS);
             telemetry.addData("Shooter", shooter.CS);
             telemetry.addData("Ramp", ramp.CS);
-            //telemetry.addData("Ramp", ramp.CS);
+            telemetry.addData("Hud", hud.CS);
             telemetry.addData("X", r.Odo.getPose().getX());
             telemetry.addData("Y", r.Odo.getPose().getY());
             telemetry.addData("Heading", Math.toDegrees(r.Odo.getPose().getHeading()));
             telemetry.addData("timer",seq.timer);
             telemetry.addData("shooter current power", r.launch1.getPower());
             telemetry.addData("shooter ideal power", functions.getshoootpower(r));
-            telemetry.addData("cuurent distance from goal", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
+            telemetry.addData("current distance from goal", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
+            telemetry.addData("current turret angle", functions.getturretpower(r));
             telemetry.update();
         }
     }

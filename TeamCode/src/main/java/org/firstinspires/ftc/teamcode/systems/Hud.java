@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.systems;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
+
 import com.bylazar.configurables.annotations.Configurable;
 
 @Configurable
@@ -24,6 +26,12 @@ public class Hud {
                 break;
             }
             case CLOSE:{
+                double dist=functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY());
+                if (dist>2.5)
+                {
+                    CS=hudStatus.FAR;
+                    break;
+                }
                 r.hud.setPosition(close);
                 break;
             }

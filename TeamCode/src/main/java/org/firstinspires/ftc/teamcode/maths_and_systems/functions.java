@@ -14,10 +14,14 @@ public class functions {
         double rx=r.Odo.getPose().getX();
         double ry=r.Odo.getPose().getY();
         double dist=getdistance(rx,ry);
-        double n=0.05;
-        double m=0.73;
-        double putere=n*dist+m;
-        putere=Math.max(0, Math.min(putere,1));
+        double putere;
+        if (dist < 2.5) {
+            double n=0.05;
+            double m=0.73;
+            putere=n*dist+m;
+            putere=Math.max(0, Math.min(putere,1));
+        }
+        else putere=0.9;
         return putere;
     }
 
@@ -34,11 +38,11 @@ public class functions {
         double ry=r.Odo.getPose().getY();
         double heading=r.Odo.getPose().getHeading();
         double angletogoal = Math.atan2(GOAL_Y - ry, GOAL_X - rx);//asta e unghiul la care trebuie sa ajunga servo ul fata de 0x
-        double finalangle=angletogoal-heading; // asta e cat trebuie sa compenseze basically tureta
-        if (finalangle>Math.toRadians(120)) finalangle=Math.toRadians(120);
-        if (finalangle<Math.toRadians(-120)) finalangle=Math.toRadians(-120);
-        finalangle=0.5+finalangle/Math.toRadians(250); //asta e ce urmeaza sa ii dau turetei si mai jos e normalizarea
-        if (finalangle<0 || finalangle>1) finalangle=0.5;
+        double finalangle=heading-angletogoal; // asta e cat trebuie sa compenseze basically tureta
+        //if (finalangle>Math.toRadians(120)) finalangle=Math.toRadians(120);
+        //if (finalangle<Math.toRadians(-120)) finalangle=Math.toRadians(-120);
+        finalangle = 0.5 + finalangle / Math.toRadians(250);
+        finalangle = Math.max(0.05, Math.min(0.95, finalangle));
         return finalangle;
 
     }
