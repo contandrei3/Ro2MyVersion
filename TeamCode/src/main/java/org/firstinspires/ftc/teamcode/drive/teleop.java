@@ -30,15 +30,15 @@ public class teleop extends LinearOpMode {
 
         ramp.CS= Ramp.rampStatus.INITIALIZE;
         shooter.CS=Shooter.shooterStatus.INITIALIZE;
-        hud.CS=Hud.hudStatus.INITIALIZE;
+        hud.CS=Hud.hudStatus.CLOSE;
         seq.CS=ShootingSequence.shootingStatus.STOP;
 
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
 
-        r.Odo.resetIMU();
-
-        globals.alliance=1;
+        //r.Odo.resetIMU();
+        r.Odo.recalibrate();
+        globals.alliance="red";
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -48,7 +48,9 @@ public class teleop extends LinearOpMode {
 
             if (currentGamepad1.left_bumper && !currentGamepad1.left_bumper)
             {
-                globals.alliance=1-globals.alliance;
+                if (globals.alliance=="red")
+                    globals.alliance="blue";
+                else globals.alliance="red";
             }
 
             double y  = -gamepad1.left_stick_y;
@@ -75,12 +77,7 @@ public class teleop extends LinearOpMode {
                 if (putere >0) putere= Math.min(putere,0.85);
                 r.collect1.setPower(putere);
                 r.collect2.setPower(putere);
-            }
-            //windup la shooter pe un buton (basically il incalzim), da merge si pe invers sa l oprim
-            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper)
-            {
-                r.launch1.setPower(0);
-                r.launch2.setPower(0);
+                //r.hud.setPosition(putere);
             }
             //shootam cu secventa pe x
             if (currentGamepad1.cross && !previousGamepad1.cross) {
@@ -91,7 +88,10 @@ public class teleop extends LinearOpMode {
             //reset de odometrie
             if (currentGamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
                 r.Odo.resetIMU();
-                r.Odo.setStartPose(new Pose(8, 8, Math.toRadians(90)));
+            }
+            if (currentGamepad1.options && !previousGamepad1.options){
+                if (globals.track==true) globals.track=false;
+                else globals.track=true;
             }
             turret.CS=Turret.turretStatus.TRACK;
             shooter.update(r);
@@ -108,11 +108,13 @@ public class teleop extends LinearOpMode {
             telemetry.addData("Hud", hud.CS);
             telemetry.addData("X", r.Odo.getPose().getX());
             telemetry.addData("Y", r.Odo.getPose().getY());
+            telemetry.addData("GX", globals.xRedGoal);
+            telemetry.addData("GY", globals.yRedGoal);
             telemetry.addData("Heading", Math.toDegrees(r.Odo.getPose().getHeading()));
             telemetry.addData("timer",seq.timer);
             telemetry.addData("shooter current power", r.launch1.getPower());
             telemetry.addData("shooter ideal power", functions.getshoootpower(r));
-            telemetry.addData("current distance from goal", functions.getdistance(r.Odo.getPose().getX(),r.Odo.getPose().getY()));
+            telemetry.addData("current distance from goal", functions.getdistance(r));
             telemetry.addData("current turret angle", functions.getturretpower(r));
             telemetry.update();
         }

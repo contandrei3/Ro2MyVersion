@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.systems;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.IDLE;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.INITIALIZE;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.STOP;
-import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.WINDUP;
+//import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.WINDUP;
 import static org.firstinspires.ftc.teamcode.systems.Shooter.shooterStatus.SHOOT;
 
 import static java.lang.Thread.sleep;
@@ -18,7 +18,6 @@ public class Shooter {
         INITIALIZE,
         IDLE,
         STOP,
-        WINDUP,
         SHOOT,
     }
 
@@ -38,12 +37,7 @@ public class Shooter {
             case IDLE: {
                 break;
             }
-            case WINDUP: {
-                r.launch1.setPower(0.3);
-                r.launch2.setPower(0.3);
-                //sleep(3000);
-                break;
-            }
+
             case SHOOT: {
                 double shootpow = functions.getshoootpower(r);
                 r.launch1.setPower(shootpow);

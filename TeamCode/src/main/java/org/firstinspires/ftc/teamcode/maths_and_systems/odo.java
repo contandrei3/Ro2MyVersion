@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
+import org.firstinspires.ftc.teamcode.declarations.globals;
+
 public class odo {
     private final GoBildaPinpointDriver pinpoint;
     private double x, y, heading;
@@ -26,7 +28,7 @@ public class odo {
     public void recalibrate() {
         pinpoint.recalibrateIMU();
         pinpoint.setPosition(new Pose2D(
-                DistanceUnit.INCH, 8, 8, AngleUnit.RADIANS, Math.toRadians(90)
+                DistanceUnit.INCH, 0, 0, AngleUnit.RADIANS, Math.toRadians(90)
         ));
     }
 

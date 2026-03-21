@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.teamcode.maths_and_systems.odo;
+//import org.firstinspires.ftc.teamcode.maths_and_systems.odo;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants;
 
 
@@ -85,10 +85,8 @@ public class RobotMap {
 
         //odo din pedro
 
-
-            Odo = new PinpointLocalizer(hwMap, constants.localizerConstants);
-            Odo.setStartPose(new Pose(8, 8, Math.toRadians(90)));
-
+        Odo= new PinpointLocalizer(hwMap, constants.localizerConstants);
+        Odo.setStartPose(new Pose(0,0,Math.toRadians(90)));
 
         //PID uri
 

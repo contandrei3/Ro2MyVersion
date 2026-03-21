@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.systems;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.declarations.globals;
 import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 import com.bylazar.configurables.annotations.Configurable;
 
@@ -34,6 +35,10 @@ public class Turret {
                 break;
             }
             case TRACK: {
+                if (globals.track==false){
+                    CS= turretStatus.FRONT;
+                    break;
+                }
                 double pos= functions.getturretpower(r);
                 //pos=0.5;
                 r.turret1.setPosition(pos);

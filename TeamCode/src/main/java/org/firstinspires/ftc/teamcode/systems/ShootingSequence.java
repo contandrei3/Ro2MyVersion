@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.systems.ShootingSequence.shootingSt
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.declarations.RobotMap;
+import org.firstinspires.ftc.teamcode.declarations.globals;
 import org.firstinspires.ftc.teamcode.maths_and_systems.functions;
 
 public class ShootingSequence {
@@ -32,24 +33,25 @@ public class ShootingSequence {
                 turret.CS=Turret.turretStatus.TRACK;
                // shooter.update(r);
                 hud.CS=Hud.hudStatus.CLOSE;
-                if (timer.seconds()>1.5) {
+                r.hud.setPosition(globals.hudangle);
+                if (timer.seconds()>=2) {
                     CS=SHOOT;
                     timer.reset();
                 }
                 break;
             }
             case SHOOT: {
-                r.collect1.setPower(0.6);
-                r.collect2.setPower(0.6);
                 ramp.CS=Ramp.rampStatus.SHOOT;
+                r.collect1.setPower(0.9);
+                r.collect2.setPower(0.9);
                 //ramp.update(r);
-                if (timer.seconds()>1.5) {CS=STOP; }
+                if (timer.seconds()>=1.5 && globals.achspeed==false) {CS=STOP; }
                 break;
             }
 
             case STOP: {
                 ramp.CS= Ramp.rampStatus.COLLECT;
-                hud.CS=Hud.hudStatus.INITIALIZE;
+                //hud.CS=Hud.hudStatus.INITIALIZE;
                 shooter.CS= Shooter.shooterStatus.STOP;
                 turret.CS= Turret.turretStatus.IDLE;
                 r.collect1.setPower(0);
