@@ -70,7 +70,7 @@ public class RobotMap {
         launch1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launch2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        launch1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launch2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launch2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //ramp-servo

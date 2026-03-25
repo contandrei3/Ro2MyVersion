@@ -16,7 +16,7 @@ public class ShootingSequence {
         PREPARE,
         SHOOT,
         STOP,
-
+        WILL_SHOOT,
     }
     // coordonate goal rosu in inch
 /*    static final double GOAL_X = 131.51;
@@ -34,18 +34,15 @@ public class ShootingSequence {
                // shooter.update(r);
                 hud.CS=Hud.hudStatus.CLOSE;
                 r.hud.setPosition(globals.hudangle);
-                if (timer.seconds()>=2) {
-                    CS=SHOOT;
-                    timer.reset();
-                }
                 break;
             }
             case SHOOT: {
                 ramp.CS=Ramp.rampStatus.SHOOT;
+                turret.CS=Turret.turretStatus.TRACK;
                 r.collect1.setPower(0.9);
                 r.collect2.setPower(0.9);
                 //ramp.update(r);
-                if (timer.seconds()>=1.5 && globals.achspeed==false) {CS=STOP; }
+                if (timer.seconds()>=2 ) {CS=STOP; }
                 break;
             }
 

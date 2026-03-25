@@ -36,8 +36,8 @@ public class teleop extends LinearOpMode {
         Gamepad currentGamepad1 = new Gamepad();
         Gamepad previousGamepad1 = new Gamepad();
 
-        //r.Odo.resetIMU();
-        r.Odo.recalibrate();
+        //r.Odo.recalibrate();
+        r.Odo.setStartPose(new Pose(globals.rx, globals.ry, Math.toRadians(globals.rheading)));
         globals.alliance="red";
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
@@ -46,7 +46,7 @@ public class teleop extends LinearOpMode {
             previousGamepad1.copy(currentGamepad1); //ala nou devine vechi
             currentGamepad1.copy(gamepad1); //mi-e lene sa schimb gamepad1 peste tot
 
-            if (currentGamepad1.left_bumper && !currentGamepad1.left_bumper)
+            if (currentGamepad1.left_bumper && !previousGamepad1.left_bumper)
             {
                 if (globals.alliance=="red")
                     globals.alliance="blue";
@@ -80,27 +80,36 @@ public class teleop extends LinearOpMode {
                 //r.hud.setPosition(putere);
             }
             //shootam cu secventa pe x
+            if (currentGamepad1.right_bumper && !previousGamepad1.right_bumper) {
+                //fastshootingsequence
+                seq.CS=ShootingSequence.shootingStatus.PREPARE;
+            }
             if (currentGamepad1.cross && !previousGamepad1.cross) {
                 //fastshootingsequence
                 seq.timer.reset();
-                seq.CS=ShootingSequence.shootingStatus.PREPARE;
+                seq.CS=ShootingSequence.shootingStatus.SHOOT;
             }
             //reset de odometrie
-            if (currentGamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
-                r.Odo.resetIMU();
-            }
+
             if (currentGamepad1.options && !previousGamepad1.options){
                 if (globals.track==true) globals.track=false;
                 else globals.track=true;
             }
             turret.CS=Turret.turretStatus.TRACK;
-            shooter.update(r);
+            shooter.update(r, r.Odo.getPose().getX(), r.Odo.getPose().getY());
             ramp.update(r);
             hud.update(r);
             seq.update(r,ramp,shooter, hud, turret);
-            turret.update(r);
+            turret.update(r, r.Odo.getPose().getX(), r.Odo.getPose().getY());
             r.Odo.update();
-
+            if (currentGamepad1.circle && !previousGamepad1.circle) { //vrem reset de pozitie
+                //r.Odo.resetIMU();
+                //r.Odo.
+                r.Odo.setPose(new Pose (0,0, Math.toRadians(90)));
+            }
+            globals.rx=r.Odo.getPose().getX();
+            globals.ry=r.Odo.getPose().getY();
+            globals.rheading=r.Odo.getPose().getHeading();
             // telemetrie
             telemetry.addData("Seq", seq.CS);
             telemetry.addData("Shooter", shooter.CS);

@@ -26,7 +26,7 @@ public class Shooter {
     double stop = 0;
     double winduppower = 0.9;
 
-    public void update(RobotMap r) {
+    public void update(RobotMap r, double rx, double ry) {
         switch (CS) {
             case INITIALIZE: {
                 r.launch1.setPower(stop);
